@@ -1,0 +1,15 @@
+[Unit]
+Description=carbonzipper server
+Documentation=https://github.com/go-graphite/carbonzipper
+
+[Service]
+User=carbon
+Group=carbon
+Type=simple
+Restart=on-failure
+ExecStart=/usr/sbin/carbonzipper -config /etc/carbonzipper.yaml
+ExecReload=/usr/bin/kill -USR2 $MAINPID
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
