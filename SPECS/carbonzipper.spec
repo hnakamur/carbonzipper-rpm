@@ -7,7 +7,7 @@
 
 Name:	        carbonzipper
 Version:	0.73.2
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	proxy to transparently merge graphite carbon backends
 
 Group:		Development/Tools
@@ -102,6 +102,9 @@ fi
 %systemd_postun
 
 %changelog
+* Tue Feb 13 2018 <hnakamur@gmail.com> - 0.73.2-2
+- Specify PID file so that graceful restart works.
+
 * Mon Nov 27 2017 <hnakamur@gmail.com> - 0.73.2-1
 - 0.73.2
 

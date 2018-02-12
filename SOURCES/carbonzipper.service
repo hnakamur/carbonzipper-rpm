@@ -7,8 +7,9 @@ User=carbon
 Group=carbon
 Type=simple
 Restart=on-failure
-ExecStart=/usr/sbin/carbonzipper -config /etc/carbonzipper.yaml
+ExecStart=/usr/sbin/carbonzipper -config /etc/carbonzipper.yaml -pid /var/run/carbonzipper/carbonzipper.pid
 ExecReload=/usr/bin/kill -USR2 $MAINPID
+PIDFile=/var/run/carbonzipper/carbonzipper.pid
 LimitNOFILE=65536
 
 [Install]
