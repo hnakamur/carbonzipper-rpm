@@ -7,7 +7,7 @@
 
 Name:	        carbonzipper
 Version:	0.73.2
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	proxy to transparently merge graphite carbon backends
 
 Group:		Development/Tools
@@ -36,7 +36,9 @@ Source1:	carbonzipper.yaml
 Source2:	carbonzipper.service
 Source3:	logrotate
 
-BuildRequires:  golang >= 1.8
+%{?systemd_requires}
+BuildRequires:	systemd
+BuildRequires:	golang >= 1.8
 
 %description
 CarbonZipper is the central part of a replacement graphite storage stack. It
@@ -99,9 +101,13 @@ fi
 %systemd_preun %{name}.service
 
 %postun
-%systemd_postun
+%systemd_postun %{name}.service
 
 %changelog
+* Tue Feb 13 2018 <hnakamur@gmail.com> - 0.73.2-3
+- Fix systemd scripts.
+  cf. https://fedoraproject.org/wiki/Packaging:Scriptlets?rd=Packaging:ScriptletSnippets#Systemd
+
 * Tue Feb 13 2018 <hnakamur@gmail.com> - 0.73.2-2
 - Specify PID file so that graceful restart works.
 
