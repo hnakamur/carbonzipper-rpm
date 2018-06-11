@@ -5,32 +5,24 @@
 %define debug_package %{nil}
 %define _unitdir /usr/lib/systemd/system
 
+
+# prerelease seq number
+%global prereleaseseq      1
+%global prereleasever      rc.1
+
 Name:	        carbonzipper
-Version:	0.73.2
-Release:	2%{?dist}
+Version:	1.0.0
+# TODO: Modify Release when we switch from prerelease to release version.
+# https://fedoraproject.org/wiki/Packaging:Versioning
+Release:        0.%{prereleaseseq}.%{prereleasever}%{?dist}
+#Release:	1%{?dist}
 Summary:	proxy to transparently merge graphite carbon backends
 
 Group:		Development/Tools
 License:	BSD-2-Clause License
 URL:		https://github.com/go-graphite/carbonzipper
 
-
-# NOTE: carbonzipper.tar.gz was created with the following commands.
-# You need to install dep with the following command.
-# go get -u github.com/golang/dep/...
-#
-# mkdir -p carbonzipper/go/src/github.com/go-graphite
-# cd carbonzipper/go
-# export GOPATH=$PWD
-# cd src/github.com/go-graphite
-# git clone https://github.com/go-graphite/carbonzipper
-# cd carbonzipper
-# git checkout 0.73.2
-# dep ensure
-# cd $GOPATH/../..
-# rm -rf carbonzipper/go/pkg
-# tar cf - carbonzipper | gzip -9 > carbonzipper.tar.gz
-Source0:	carbonzipper.tar.gz
+Source0:	https://github.com/go-graphite/carbonzipper/archive/%{version}-%{preleasever}.tar.gz#/%{name}-%{version}-%{prereleasever}.tar.gz
 
 Source1:	carbonzipper.yaml
 Source2:	carbonzipper.service
@@ -46,7 +38,8 @@ carbon stores, but the current version requires the use of go-carbon or
 graphite-clickhouse.
 
 %prep
-%setup -n %{name}
+%setup -c -n %{_builddir}/%{name}/go/src/github.com/go-graphite
+%{__mv} %{name}-%{version}-%{prereleasever} %{name}
 
 %build
 export GOPATH=%{_builddir}/%{name}/go
@@ -102,6 +95,9 @@ fi
 %systemd_postun
 
 %changelog
+* Mon Jun 11 2018 <hnakamur@gmail.com> - 1.0.0-0.1.rc.1
+- 1.0.0-rc.1
+
 * Tue Feb 13 2018 <hnakamur@gmail.com> - 0.73.2-2
 - Specify PID file so that graceful restart works.
 
